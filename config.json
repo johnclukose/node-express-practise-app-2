@@ -2,9 +2,9 @@
     "mode" : "development",
     "production" : {
         "database" : {
-            "name"     : "arecontv_db",
+            "name"     : "project1_db",
             "username" : "root",
-            "password" : "mindfire",
+            "password" : "john",
             "options"  : {
                 "host"     : "localhost",
                 "dialect"  : "mysql",
@@ -18,10 +18,10 @@
         "debug" : false
     },
     "development" : {
-        "database" : {
-            "name"     : "arecontv_db",
+         "database" : {
+            "name"     : "project1_db",
             "username" : "root",
-            "password" : "mindfire",
+            "password" : "john",
             "options"  : {
                 "host"     : "localhost",
                 "dialect"  : "mysql",

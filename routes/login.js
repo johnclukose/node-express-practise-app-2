@@ -2,20 +2,19 @@
 'use strict';
 
 /**
- * @function addRoute add routes
- * @private
- * @param {object} router 
+ * @function addRoute add routes for login
+ * @public
+ * @param {object} app - application instance
  */
-function addRoute(router) {
+function addRoute(app) {
     
+    var router = app.util.router;
+
     // fetch login details
     router.post('/login', function(req, res, next) {
         res.send('respond with a resource');
     });
 }
 
-/**
- * Module exports.
- * @public
- */
+/** @public Module exports */ 
 module.exports = addRoute;

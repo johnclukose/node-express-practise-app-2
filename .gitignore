@@ -1,3 +1,6 @@
 node_modules/**
 # config files needs to be ignored 
 # config.json
+.DS_Store
+public/.DS_Store
+views/.DS_Store

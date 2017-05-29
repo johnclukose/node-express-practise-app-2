@@ -1,34 +1,29 @@
-/** For handling entire application routes */
+/** @module routes - represents application routes */
 'use strict';
 
 /**
- * @var {string[]} allRoutes - list of all the database services used in the application
- * @constant
- * @private
- * Service names passed in this array must be equal to the service file name
- */
-var allRoutes = [
-  'users',
-  'login',
-];
-
-/**
- * @function setApplicationRoutes configure routes for the entire application
+ * @function configureApplicationRoutes - configure routes for the entire application
  * @public
- * @param {object} router 
+ * @param {object} app - application instance 
  */
-function setApplicationRoutes(router) {
+function configureApplicationRoutes(app) {
 
-  // home page
-  router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express!' });
-  });
+    var fs = app.util.fs, path = app.util.path, router = app.util.router;
 
-  // add each route  
-  allRoutes.forEach(function(routeName) {
-    require(__dirname + '/' + routeName)(router);
-  }); 
+    // setting home page route
+    router.get('/', function(req, res, next) {
+      res.render('index', { title: 'Express!' });
+    });
+    
+    fs
+      .readdirSync(__dirname)
+      .filter(function(file) {
+        return (file.indexOf(".") !== 0) && (file !== "index.js");
+      })
+      .forEach(function(file) {
+        require(path.join(__dirname, file))(app);
+      });
 }
 
 /** @public Module exports. */
-module.exports = setApplicationRoutes;
+module.exports = configureApplicationRoutes;

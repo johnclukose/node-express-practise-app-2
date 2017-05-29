@@ -2,15 +2,19 @@
 'use strict';
 
 /**
- * @function addRoute add routes
- * @private
- * @param {object} router 
+ * @function addRoute add routes for users
+ * @public
+ * @param {object} app - application instance 
  */
-function addRoute(router) {
+function addRoute(app) {
+
+  var users = app.service.users;
+  var router = app.util.router;
     
   // get all users
   router.get('/users', function(req, res, next) {
-    res.send('respond with a resource');
+    var results = users.getAll();
+    res.send(JSON.stringify(results));
   });
 
   // get a particular user
@@ -20,17 +24,17 @@ function addRoute(router) {
 
   // create a user
   router.post('/users', function(req, res, next) {
-    res.send('respond with a resource');
+     users.create({
+      firstName: 'John',
+      lastName: 'Hancock'
+    });
   });
 
   // delete a user
-  router.delete('/', function(req, res, next) {
+  router.delete('/users/:id', function(req, res, next) {
     res.send('respond with a resource');
   });
 }
 
-/**
- * Module exports.
- * @public
- */
+/** @public Module exports */ 
 module.exports = addRoute;

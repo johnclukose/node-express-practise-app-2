@@ -1,14 +1,27 @@
-/**
- * @module users 
- * Represents users model 
- */
+/** @module users Represents users model */
 'use strict';
 
-var Users = sequelize.define('users', {
-  firstName: {
-    type: Sequelize.STRING
-  },
-  lastName: {
-    type: Sequelize.STRING
-  }
-});
+/**
+ * @function initModel - initialize model users
+ * @public
+ * @param {object} sequelize - Sequelize orm instance
+ * @param {object} DataTypes - Sequelize datatype object
+ * @return {object} users - users model
+ */
+var initModel = function(sequelize, DataTypes) {
+
+  // define schema
+  var users = sequelize.define('users', {
+    firstName: {
+      type: DataTypes.STRING
+    },
+    lastName: {
+      type: DataTypes.STRING
+    }
+  });
+
+  return users;
+};
+
+/** @public Module exports */
+module.exports = initModel;

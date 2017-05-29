@@ -1,31 +1,31 @@
-/** @module connection A module for  creating establish database connection and provide orm instance */
+/** 
+ * @module models - represents database schema
+ * A module for  creating establish database connection and provide orm instance 
+ * @reference http://sequelize.readthedocs.io/en/1.7.0/articles/express/
+ */
 'use strict';
 
-/** @private Module dependencies */
-var fs = require("fs");
-var path = require("path");
-var sequelizeModule = require('sequelize');
-
 /**
- * @function createConnection create database connection
- * @param {JSON} appConfig - application configuration
- * @returns {Object} sequelize - ORM object
+ * @function configureApplicationDatabase - create database connection
+ * @public
+ * @param {object} app - application instance
  */
-var createConnection = function(appConfig) {
+var configureApplicationDatabase = function(app) {
+
+  // fetch database configuration
+  var appConfig = app.config;
+  var fs = app.util.fs;
+  var path = app.util.path;
+  var dbConfig = appConfig[appConfig.mode].database;
+  var Sequelize = app.util.sequelize;
   
-  var appMode = appConfig.mode; 
-  var dbConfig = appConfig[appMode].database;
-  var db = {};
+  // db acts as a container for all database related objects
+  var db = { models: {}};
 
   // create orm instance
-  var sequelize = new sequelizeModule(
-    dbConfig.name, 
-    dbConfig.username, 
-    dbConfig.password, 
-    dbConfig.options
-  );
+  var sequelize = new Sequelize(dbConfig.name, dbConfig.username, dbConfig.password, dbConfig.options);
 
-  // Test connection status
+  // test database connection status
   sequelize
     .authenticate()
     .then(() => {
@@ -36,6 +36,7 @@ var createConnection = function(appConfig) {
       process.exit();
     });
   
+  // load all model into the db container
   fs
     .readdirSync(__dirname)
     .filter(function(file) {
@@ -43,19 +44,18 @@ var createConnection = function(appConfig) {
     })
     .forEach(function(file) {
       var model = sequelize.import(path.join(__dirname, file));
-      db.[model.name] = model;
+      db.models[model.name] = model;
     });
 
-  Object.keys(db).forEach(function(modelName) {
-    if ("associate" in db[modelName]) {
-      db[modelName].associate(db);
+  Object.keys(db.models).forEach(function(modelName) {
+    if ("associate" in db.models[modelName]) {
+      db.models[modelName].associate(db);
     }
   });
 
   db.sequelize = sequelize;
-
-  return db;
+  app.db = db;
 }
 
 /** @public Module exports */
-module.exports = createConnection;
+module.exports = configureApplicationDatabase;

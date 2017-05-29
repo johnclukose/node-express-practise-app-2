@@ -1,32 +1,53 @@
-/** Represents application */
+/**  
+ * @module represents entire application 
+ * module functionalities
+ * - create express application
+ * - configure dependencies
+ * - configure models
+ * - configure routes
+ * - configure error handler
+ */
 'use strict';
 
-/** Module dependencies. */
+/** Module dependencies */
 var express = require('express');
-var router = express.Router();
-var path = require('path');
-var favicon = require('serve-favicon');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var logger = require('morgan');
 
-var appConfig = require('./config'); // load application configuration
-require('./models')(appConfig);      // initiate database operations
-require('./routes')(router);         // configure routes
-var app = express();                 // create instance of express application
-app.use('/', router);                // register routes with application
+// create instance of express application
+var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+/* adding dependencies to application instance(app) utility property(util). 
+The idea is to inject the dependency directly into the app instance and 
+thus avoiding repeated require statements across the application */
+app.util = {};
+app.util.express = express;
+app.util.router = app.util.express.Router();
+app.util.debug = require('debug')('myexpressapp:server');
+app.util.http = require('http');
+app.util.fs = require("fs");
+app.util.path = require('path');
+app.util.favicon = require('serve-favicon');
+app.util.cookieParser = require('cookie-parser');
+app.util.bodyParser = require('body-parser');
+app.util.logger = require('morgan');
+app.util.expressLayouts = require('express-ejs-layouts');
+app.util.sequelize = require('sequelize');
 
+// configuring application
+app.config = require('./config');      // get application configuration
+require('./models')(app);              // configure database
+require('./services')(app);            // configure service
+require('./routes')(app);              // configure routes
+app.use('/', app.util.router);         // register routes with application
+app.set('views', app.util.path.join(__dirname, 'views')); // configure views folder
+app.set('view engine', 'ejs');         // configure view engine
+app.use(app.util.expressLayouts);      // use ejs layouts
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(app.util.logger('dev'));
+app.use(app.util.bodyParser.json());
+app.use(app.util.bodyParser.urlencoded({ extended: false }));
+app.use(app.util.cookieParser());
+app.use(app.util.express.static(app.util.path.join(__dirname, 'public')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
