@@ -8,13 +8,14 @@
  */
 function addRoute(app) {
 
-  var users = app.service.users;
+  var UsersService = app.service.users;
   var router = app.util.router;
     
   // get all users
   router.get('/users', function(req, res, next) {
-    var results = users.getAll();
-    res.send(JSON.stringify(results));
+      UsersService.getAll().then(function(response){
+        res.json(response);
+      })
   });
 
   // get a particular user

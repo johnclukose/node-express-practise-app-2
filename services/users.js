@@ -10,14 +10,22 @@
 function configureService(app) {
 
     var service = {};
-    var users = app.db.models.users;
+    var Users = app.db.models.users;
 
     service.get = function () {
-        users.findAll().then(users => users);
+        Users.findAll().then(users => users);
     }
     
     service.getAll = function () {
-        users.findAll().then(users => users);
+        Users.create({
+            firstName: 'John',
+            lastName: 'Hancock'
+        });
+        
+        return Users.findAll().then(function(users){
+            //logic
+            return users;
+        });
     }
 
     service.create = function () {

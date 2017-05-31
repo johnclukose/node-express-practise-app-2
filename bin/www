@@ -74,7 +74,7 @@ sequelize.sync({force: true}).then(function() {
       : 'port ' + addr.port;
     debug('Listening on ' + bind);
   }
-  var port = normalizePort(process.env.PORT || '9820'); // get port
+  var port = normalizePort(process.env.PORT || '9850'); // get port
   app.set('port', port);                                // set port
   var server = http.createServer(app);                  // create HTTP server
   server.listen(port);                                  // listen at port
