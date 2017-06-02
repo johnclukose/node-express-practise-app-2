@@ -8,19 +8,36 @@
  * @param {object} DataTypes - Sequelize datatype object
  * @return {object} users - users model
  */
-var initModel = function(sequelize, DataTypes) {
+let initModel = function(sequelize, DataTypes) {
 
   // define schema
-  var users = sequelize.define('users', {
+  let users = sequelize.define('users', {
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    username: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isEmpty: false
+        notEmpty: true
       }
     },
     lastName: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+        allowNull: true
     }
   });
 

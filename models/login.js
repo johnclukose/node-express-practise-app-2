@@ -8,10 +8,10 @@
  * @param {object} DataTypes - Sequelize datatype object
  * @return {object} login - login model
  */
-var initModel = function(sequelize, DataTypes) {
-
+let initModel = function(sequelize, DataTypes) {
+  //
   // define schema
-  var login = sequelize.define('login', {
+  let login = sequelize.define('login', {
     email: {
       type: DataTypes.STRING
     },
@@ -22,6 +22,6 @@ var initModel = function(sequelize, DataTypes) {
 
   return login;
 };
-
-/** @public Module exports */
+//
+// /** @public Module exports */
 module.exports = initModel;

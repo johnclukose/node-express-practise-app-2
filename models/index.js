@@ -10,20 +10,31 @@
  * @public
  * @param {object} app - application instance
  */
-var configureApplicationDatabase = function(app) {
+let configureApplicationDatabase = function(app) {
 
   // fetch database configuration
-  var appConfig = app.config;
-  var fs = app.util.fs;
-  var path = app.util.path;
-  var dbConfig = appConfig[appConfig.mode].database;
-  var Sequelize = app.util.sequelize;
-  
+  let appConfig = app.config;
+  let fs = app.util.fs;
+  let path = app.util.path;
+  let dbConfig = appConfig[appConfig.mode].database;
+  let Sequelize = app.util.sequelize;
+
   // db acts as a container for all database related objects
-  var db = { models: {}};
+  let db = { models: {}};
+
+  /**
+   * check if the database config has environment variables set
+   * and update the config with the environment value and
+   * initialize Sequelize with the updated config.
+   */
+  for (let key in dbConfig){
+    if(dbConfig[key].ENV && dbConfig[key].ENV !== null){
+        dbConfig[key] = process.env[dbConfig[key].ENV];
+    }
+  }
 
   // create orm instance
-  var sequelize = new Sequelize(dbConfig.name, dbConfig.username, dbConfig.password, dbConfig.options);
+  let sequelize = new Sequelize(dbConfig.name, dbConfig.username, dbConfig.password, dbConfig.options);
 
   // test database connection status
   sequelize
@@ -43,7 +54,7 @@ var configureApplicationDatabase = function(app) {
       return (file.indexOf(".") !== 0) && (file !== "index.js");
     })
     .forEach(function(file) {
-      var model = sequelize.import(path.join(__dirname, file));
+      let model = sequelize.import(path.join(__dirname, file));
       db.models[model.name] = model;
     });
 
@@ -55,7 +66,8 @@ var configureApplicationDatabase = function(app) {
 
   db.sequelize = sequelize;
   app.db = db;
-}
+
+};
 
 /** @public Module exports */
 module.exports = configureApplicationDatabase;
