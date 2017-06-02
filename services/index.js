@@ -5,18 +5,17 @@
 
 /**
  * @function configureApplicationServices
- *
  * @param {Object} app - application instance
  * @public
  */
-var configureApplicationServices = function(app) {
+let configureApplicationServices = function(app) {
 
-  var fs = app.util.fs;
-  var path = app.util.path;
-  
+  let fs = app.util.fs,
+    path = app.util.path;
+
   // service will act as a container for bussiness logic
-  var service = {}
-  
+  let service = {};
+
   // load all business logic into the service container
   fs
     .readdirSync(__dirname)
@@ -24,12 +23,11 @@ var configureApplicationServices = function(app) {
       return (file.indexOf(".") !== 0) && (file !== "index.js");
     })
     .forEach(function(file) {
-      var serv = require(path.join(__dirname, file))(app);
-      service[file.replace('.js', '')] = serv;
+      service[file.replace('.js', '')] = require(path.join(__dirname, file))(app);
     });
 
   app.service = service;
-}
+};
 
 /** @public module exports */
 module.exports = configureApplicationServices;
