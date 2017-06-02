@@ -6,22 +6,21 @@
  */
 'use strict';
 
-var app = require('../app');
-var models = app.db.models;
-var sequelize = app.db.sequelize;
-var debug = app.util.debug;
-var http = app.util.http;
+let app = require('../app');
+let sequelize = app.db.sequelize;
+let debug = app.util.debug;
+let http = app.util.http;
 
 // prepare database and set server
 // sequelize.sync({force:true}) - to recreate database
-sequelize.sync({force:true}).then(() => {
+sequelize.sync().then(() => {
   /**
    * @function normalizePort - Normalize a port into a number, string, or false.
    * @param {object} val - port number
    * @return {String|boolean}
    */
   function normalizePort(val) {
-    var port = parseInt(val, 10);
+    let port = parseInt(val, 10);
 
     if (isNaN(port)) {
       // named pipe
@@ -46,7 +45,7 @@ sequelize.sync({force:true}).then(() => {
       throw error;
     }
 
-    var bind = typeof port === 'string'
+    let bind = typeof port === 'string'
       ? 'Pipe ' + port
       : 'Port ' + port;
 
@@ -69,15 +68,15 @@ sequelize.sync({force:true}).then(() => {
    * @function onListening - Event listener for HTTP server "listening" event.
    */
   function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === 'string'
+    let addr = server.address();
+    let bind = typeof addr === 'string'
       ? 'pipe ' + addr
       : 'port ' + addr.port;
     debug('Listening on ' + bind);
   }
-  var port = normalizePort(process.env.PORT || '9860'); // get port
+  let port = normalizePort(process.env.PORT || '8000'); // get port
   app.set('port', port);                                // set port
-  var server = http.createServer(app);                  // create HTTP server
+  let server = http.createServer(app);                  // create HTTP server
   server.listen(port);                                  // listen at port
   server.on('error', onError);
   server.on('listening', onListening);
