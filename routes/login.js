@@ -7,14 +7,15 @@
  * @param {object} app - application instance
  */
 function addRoute(app) {
-    
-    var router = app.util.router;
+  let router = app.util.router;
 
-    // fetch login details
-    router.post('/login', function(req, res, next) {
-        res.send('respond with a resource');
-    });
+  // fetch login details
+  router.post('/login', function (req, res, next) {
+    res.send('respond with a resource');
+  });
+
+  return router;
 }
 
-/** @public Module exports */ 
+/** @public Module exports */
 module.exports = addRoute;

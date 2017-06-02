@@ -3,21 +3,23 @@
 
 /**
  * @function addRoute - add routes for users
- * @param {Object} app - application instance 
+ * @param {Object} app - application instance
  * @public
  */
 function addRoute(app) {
 
-  /** dependancies */
-  var router = app.util.router;
-  var UserService = app.service.user;
+  /** dependencies */
+  let router = app.util.router,
+    UserService = app.service.user;
 
-  router.get('/user',        UserService.getAll);    // get all users
-  router.get('/user/:id',    UserService.get);       // get user
-  router.post('/user',       UserService.add);       // add user
-  router.put('/user/:id',    UserService.update);    // update user
-  router.delete('/user/:id', UserService.remove);    // delete user
+  router.get('/users', UserService.getAll); // get all users
+  router.get('/users/:id', UserService.get); // get user by id
+  router.post('/users', UserService.add); // add user
+  router.put('/users/:id', UserService.update); // update user by id
+  router.delete('/users/:id', UserService.remove); // delete user by id
+
+  return router;
 }
 
-/** @public Module exports */ 
+/** @public Module exports */
 module.exports = addRoute;
