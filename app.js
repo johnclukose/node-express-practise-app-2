@@ -10,10 +10,10 @@
 'use strict';
 
 /** Module dependencies */
-var express = require('express');
+let express = require('express');
 
 // create instance of express application
-var app = express();
+let app = express();
 
 /* adding dependencies to application instance(app) utility property(util). 
 The idea is to inject the dependency directly into the app instance and 
@@ -39,7 +39,6 @@ app.use(app.util.bodyParser.urlencoded({ extended: true }));
 app.use(app.util.logger('dev'));
 app.use(app.util.cookieParser());
 app.use(app.util.express.static(app.util.path.join(__dirname, 'public')));
-app.use('/', app.util.router);         // configure router with application
 app.use(app.util.favicon(app.util.path.join(__dirname, 'public', 'favicon.ico')));
 app.disable('x-powered-by');
 
