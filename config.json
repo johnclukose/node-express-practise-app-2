@@ -2,11 +2,11 @@
     "mode" : "development",
     "production" : {
         "database" : {
-            "name"     : "project1_db",
-            "username" : "root",
-            "password" : "john",
+            "name"     : { "ENV" : "DB_NAME"},
+            "username" : { "ENV" : "DB_USERNAME"},
+            "password" : { "ENV" : "DB_PASSWORD"},
+            "host"     : { "ENV" : "DB_HOST"},
             "options"  : {
-                "host"     : "localhost",
                 "dialect"  : "mysql",
                 "pool"     : {
                     "max"  : 5,
@@ -18,12 +18,12 @@
         "debug" : false
     },
     "development" : {
-         "database" : {
-            "name"     : "project1_db",
-            "username" : "root",
-            "password" : "john",
+        "database" : {
+            "name"     : { "ENV" : "DB_NAME"},
+            "username" : { "ENV" : "DB_USERNAME"},
+            "password" : { "ENV" : "DB_PASSWORD"},
+            "host"     : { "ENV" : "DB_HOST"},
             "options"  : {
-                "host"     : "localhost",
                 "dialect"  : "mysql",
                 "pool"     : {
                     "max"  : 5,
