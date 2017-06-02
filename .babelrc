@@ -1,0 +1,13 @@
+{
+  "presets": ["env"],
+  "plugins": [],
+  "ignore": [],
+  "env": {
+    "development": {
+      "plugins": []
+    },
+    "production": {
+      "plugins": []
+    }
+  }
+}
