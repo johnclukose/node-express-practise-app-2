@@ -3,20 +3,35 @@
 
 /**
  * @function configureService
+ * 
+ * @param {Object} app - application instance
+ * @return {Object} service
  * @public
- * @param {object} app - application instance
- * @return {object} service
  */
 function configureService(app) {
 
     var service = {};
     var login = app.db.models.login;
 
-    service.login = function () {
+    /**
+     * @function login - login application
+     * 
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * @public
+     */
+    service.login = function (req, res) {
         
     }
     
-    service.register = function () {
+    /**
+     * @function register - register user
+     * 
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * @public
+     */
+    service.register = function (req, res) {
     
     }
 

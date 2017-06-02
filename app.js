@@ -29,43 +29,29 @@ app.util.favicon = require('serve-favicon');
 app.util.cookieParser = require('cookie-parser');
 app.util.bodyParser = require('body-parser');
 app.util.logger = require('morgan');
-app.util.expressLayouts = require('express-ejs-layouts');
 app.util.sequelize = require('sequelize');
+app.util.favicon = require('serve-favicon');
 
-// configuring application
-app.config = require('./config');      // get application configuration
-require('./models')(app);              // configure database
-require('./services')(app);            // configure service
-require('./routes')(app);              // configure routes
-app.use('/', app.util.router);         // register routes with application
-app.set('views', app.util.path.join(__dirname, 'views')); // configure views folder
-app.set('view engine', 'ejs');         // configure view engine
-app.use(app.util.expressLayouts);      // use ejs layouts
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(app.util.logger('dev'));
+// general application configuration
 app.use(app.util.bodyParser.json());
-app.use(app.util.bodyParser.urlencoded({ extended: false }));
+app.use(app.util.bodyParser.urlencoded({ extended: true }));
+// app.use(methodOverride()) -> good to know
+app.use(app.util.logger('dev'));
 app.use(app.util.cookieParser());
 app.use(app.util.express.static(app.util.path.join(__dirname, 'public')));
+app.use('/', app.util.router);         // configure router with application
+app.use(app.util.favicon(app.util.path.join(__dirname, 'public', 'favicon.ico')));
+app.disable('x-powered-by');
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+// business specific application configuration
+app.config = require('./config');               // get application configuration
+require('./models')(app);                       // configure database
+require('./services')(app);                     // configure service
+require('./routes')(app);                       // configure routes
+require('./utilities/customErrorHandler')(app); // get application error handlers
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+app.use(app.util.errorHandler.request404Handler);       // add 404 middleware
+app.use(app.util.errorHandler.requestExceptionHandler); // add 500 middleware
 
 /** @public Module exports */
 module.exports = app;

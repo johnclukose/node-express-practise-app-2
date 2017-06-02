@@ -5,8 +5,9 @@
 
 /**
  * @function configureApplicationServices
+ *
+ * @param {Object} app - application instance
  * @public
- * @param {object} app - application instance
  */
 var configureApplicationServices = function(app) {
 
@@ -30,5 +31,5 @@ var configureApplicationServices = function(app) {
   app.service = service;
 }
 
-/** @public Module exports */
+/** @public module exports */
 module.exports = configureApplicationServices;

@@ -13,7 +13,8 @@ var debug = app.util.debug;
 var http = app.util.http;
 
 // prepare database and set server
-sequelize.sync({force: true}).then(function() {
+// sequelize.sync({force:true}) - to recreate database
+sequelize.sync({force:true}).then(() => {
   /**
    * @function normalizePort - Normalize a port into a number, string, or false.
    * @param {object} val - port number
@@ -74,10 +75,22 @@ sequelize.sync({force: true}).then(function() {
       : 'port ' + addr.port;
     debug('Listening on ' + bind);
   }
-  var port = normalizePort(process.env.PORT || '9850'); // get port
+  var port = normalizePort(process.env.PORT || '9860'); // get port
   app.set('port', port);                                // set port
   var server = http.createServer(app);                  // create HTTP server
   server.listen(port);                                  // listen at port
   server.on('error', onError);
   server.on('listening', onListening);
+}).catch(error => {
+  console.error('Error while preparing database');
+  console.error(error);
+  process.exit(1);
 });
+
+// Test catch
+// Test transaction
+// Test schema validation
+// Test express validator
+// Logging at model level
+// debugging in prod and dev
+// security

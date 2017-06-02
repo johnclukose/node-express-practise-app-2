@@ -13,7 +13,11 @@ var initModel = function(sequelize, DataTypes) {
   // define schema
   var users = sequelize.define('users', {
     firstName: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmpty: false
+      }
     },
     lastName: {
       type: DataTypes.STRING
